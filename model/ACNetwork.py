@@ -54,11 +54,85 @@ class ACNetwork(object):
         self.a = tf.placeholder(tf.int32,[None,],name='a')
         
         with tf.variable_scope('Critic'):
+            self.v = self._build_c_net(self.s,scope='v',trainable=True)
+            self.v_ = self.build_c_net(self.s_next,scope='v_next',trainable=False)
             
+            self.td_error = self.r + self.gamma * self.v_ - self.v
+            self.loss_critic = tf.reduce_mean(tf.square(self.td_error))
+            with tf.variable_scope('train'):
+                self.train_op_critic = tf.train.AdamOptimizer(self.lr).minimize(self.loss_critic)
+                
+        with tf.variable_scope('Actor'):
+            self.acts_prob = self._build_a_net(self.s,scope='actor_net',trainable=True)
+            #this is negative log of chosen action
+            log_prob = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.acts_prob,labels=self.a)
+            
+            self.loss_actor = tf.reduce_mean(log_prob*self.td_error)
+            with tf.variable_scope('train'):
+                self.train_op_actor = tf.train.AdamOptimizer(self.lr).minimize(-self.loss_actor)
+        
+        self.sess = tf.Session()
+        if self.output_graph:
+            tf.summary.FileWriter(self.log_dir,self.sess.graph)
+        
+        self.sess.run(tf.global_variables_initializer())
+        
+        self.cost_his=[0]
+        self.saver = tf.train.Saver()
+        
+        if not os.path.exists(self.model_dir):
+            os.mkdir(self.model_dir)
+        
+        checkpoint = tf.train.get_checkpoint_state(self.model_dir)
+        if checkpoint and checkpoint.model_checkpoint_path:
+            self.saver.restore(self.sess,checkpoint.model_checkpoint_path)
+            print('Loading Sucessfully!')
+            self.learn_step_counter = int(checkpoint.model_checkpoint_path.split('-')[-1]) + 1
+        
+        @abstractmethod
+        def _build_a_net(self,x,scope,trainable):
+            raise NotImplementedError
+        
+        def _build_c_net(self,x,scope,trainable):
+            raise NotImplementedError
         
         
+        def learn(self,data):
+            
+            batch_memory_s = data['s']
+            batch_memory_a = data['a']
+            batch_memory_r = data['r']
+            batch_memory_s_ = data['s_']
+            
+            _,cost = self.sess.run(
+                    [self.train_op_critic,self.loss_critic],
+                    fedd_dic={
+                        self.s:batch_memory_s,
+                        self.a:batch_memory_a,
+                        self.r:batch_memory_r,
+                        self.s_next:batch_memory_s_,                        
+                    })
+            _, cost = self.sess.run(
+                    [self.train_op_actor, self.loss_actor],
+                        feed_dict={
+                                self.s: batch_memory_s,
+                                self.a: batch_memory_a,
+                                self.r: batch_memory_r,
+                                self.s_next: batch_memory_s_,         
+                    })
+            
+            self.cost_his.append(cost)
+            self.learn_step_counter += 1
+            
+            if self.learn_step_counter % 10000 == 0:
+                self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter)
         
-        
+        def choose_action(self,s): 
+            s = s[np.newaxis,:]
+       
+            probs = self.sess.run(self.acts_prob,feed_dict={self.s:s})
+            return np.random.choice(np.arange(probs.shape[1]), p=probs.ravel()) 
+            
         
         
         
