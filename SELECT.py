@@ -40,15 +40,15 @@ class DDPG4Pendulum(DDPG):
         super(DDPG4Pendulum,self).__init__(**kwargs)
     
     def _build_a_net(self,s,scope,trainable):
-        w_initializer,b_initializer = tf.random_normal_initializer(0.,0.3),
-        tf.constant_initializer(0.1)
-        #w_initializer,b_initializer = None,None
+        #w_initializer,b_initializer = tf.random_normal_initializer(0.0,0.3),
+        #tf.constant_initializer(0.1)
+        w_initializer,b_initializer = None,None
         with tf.variable_scope(scope):
             e1 = tf.layers.dense(
-                    input=s,
+                    inputs=s,
                     units=30,
                     bias_initializer = b_initializer,
-                    kerner_initializer = w_initializer,
+                    kernel_initializer = w_initializer,
                     activation = tf.nn.relu,
                     trainable=trainable
                     )
@@ -56,34 +56,42 @@ class DDPG4Pendulum(DDPG):
                     inputs=e1,
                     units=self.n_actions,
                     bias_initializer = b_initializer,
-                    kerner_initializer = w_initializer,
+                    kernel_initializer = w_initializer,
                     activation = tf.nn.tanh,
                     trainable=trainable
                     )
         
         return tf.multiply(a,self.a_bound,name='scaled_a')
     
-    def _build_c_net(self,s,a,scope,trainable):
-        w_initializer,b_initializer = tf.random_normal_initializer(0., 0.3),
-        tf.constant_initializer(0.1)
-        
+    #def _build_c_net(self,s,a,scope,trainable):
+    #    w_initializer,b_initializer = tf.random_normal_initializer(0., 0.3),
+    #    tf.constant_initializer(0.1)
+    #    
+    #    with tf.variable_scope(scope):
+    #        n_l1 = 30
+    #        w1_s = tf.get_variable('w1_s',self.n_features+[n_l1],trainable=trainable)
+    #        w1_a = tf.get_variable('w1_a',[self.n_actions,n_l1],trainable=trainable)
+    #        b1 = tf.get_variable('b1',[1,n_l1],trainable=trainable)
+    #        net = tf.nn.relu(tf.matmul(s,w1_s) + tf.matmul(a,w1_a) + b1)
+    #        
+    #        q = tf.layers.dense(
+    #                input = net,
+    #                units=1,
+    #                bias_initializer = b_initializer,
+    #                kerner_initializer = w_initializer,
+    #                activation = None,
+    #                trainable = trainable
+    #                )
+    #        return q
+    
+    def _build_c_net(self, s, a, scope, trainable):
         with tf.variable_scope(scope):
             n_l1 = 30
-            w1_s = tf.get_variable('w1_s',self.n_features+[n_l1],trainable=trainable)
-            w1_a = tf.get_variable('w1_a',[self.n_actions,n_l1],trainable=trainable)
-            b1 = tf.get_variable('b1',[1,n_l1],trainable=trainable)
-            net = tf.nn.relu(tf.matmul(s,w1_s) + tf.matmul(a,w1_a) + b1)
-            
-            q = tf.layers.dense(
-                    input = net,
-                    units=1,
-                    bias_initializer = b_initializer,
-                    kerner_initializer = w_initializer,
-                    activation = None,
-                    trainable = trainable
-                    )
-            return q
-    
+            w1_s = tf.get_variable('w1_s', [self.n_features, n_l1], trainable=trainable)
+            w1_a = tf.get_variable('w1_a', [self.n_actions, n_l1], trainable=trainable)
+            b1 = tf.get_variable('b1', [1, n_l1], trainable=trainable)
+            net = tf.nn.relu(tf.matmul(s, w1_s) + tf.matmul(a, w1_a) + b1)
+            return tf.layers.dense(net, 1, trainable=trainable)  # Q(s,a)
 
 
 batch_size = 32
@@ -98,12 +106,14 @@ env = env.unwrapped
 MAX_EP_STEPS = 200
 
 def run():
+    print('start select application run!')
     RL = DDPG4Pendulum(
             n_actions=n_actions,
             n_features = n_features,
             reward_decay = 0.9,
             lr_a = 0.001,
             lr_c = 0.002,
+            memory_size=memory_size,
             TAU = 0.01,
             output_graph=False,
             log_dir = 'Pendulum/log/DDPG4Pendulum/',
@@ -130,11 +140,43 @@ def run():
             memory.store_transition(observation,action,reward/10,observation_)
             
             if step > memory_size:
-                #env.render()
+                env.render()
                 #decay the action randomness
                 var *=.9995
                 data = memory.sample(batch_size)
                 RL.learn(data)
+            
+            #swap observation
+            observation = observation_
+            ep_r += reward
+            #break while loop when end of this episode
+            if episode > 200:
+                evn.render()
+            if j == MAX_EP_STEPS-1:
+                print(
+                    'step: ',step,
+                    'episode: ',episode,
+                    'ep_r: ',round(ep_r,2),
+                    'var: ',var
+                    )
+                break
+            
+            step += 1
+        
+        
+        #end game
+        print('game over')
+        env.destroy()
+
+
+def main():
+    run()
+
+
+
+if __name__ == '__main__':
+    main()
+
     
 
 

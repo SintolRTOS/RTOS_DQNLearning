@@ -56,8 +56,8 @@ class DDPG(object):
         self.TAU = TAU
         self.a_bound = a_bound
         self.s = tf.placeholder(tf.float32,[None] + self.n_features,name='s')
-        self.s_next = tf.placeholder(tf.float32,[None] + selft.n_features,name='s_next')
-        self.r = tf.placeholder(tf.float32,[Nonde,],name='r')
+        self.s_next = tf.placeholder(tf.float32,[None] + self.n_features,name='s_next')
+        self.r = tf.placeholder(tf.float32,[None,],name='r')
         with tf.variable_scope('Actor'):
             self.a = self._build_a_net(self.s,scope='eval',trainable=True)
             a_ = self._build_a_net(self.s_next,scope='target',trainable=False)
