@@ -105,10 +105,10 @@ class DDPG4Pendulum(DDPG):
 
 #####################  hyper parameters  ####################
 
-MAX_EPISODES = 200
-MAX_EP_STEPS = 200
+MAX_EPISODES = 500
+MAX_EP_STEPS = 500
 batch_size  = 32
-RENDER = False
+RENDER = True
 ENV_NAME = 'Pendulum-v0'
 
 env = gym.make(ENV_NAME)
