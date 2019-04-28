@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.DEBUG,
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 tfconfig = tf.ConfigProto()
-tfconfig.gpu_options.allow_growth = False
+tfconfig.gpu_options.allow_growth = True
 session = tf.Session(config=tfconfig)
 
 
