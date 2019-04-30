@@ -39,6 +39,42 @@ class WordAgent(object):
             self.data.append(ROW)
         print("all form data: ", end="")
         print(self.data)
+    def reset(self):
+        self.data.clear()
+        print('wordAgent clear!')
+        self.openExcel()
+        self.init_observation()
+        self.init_action_space()
+        self.reward = 0.
+        return self.observation
+        
+    def init_observation(self):
+        keywords_length = len(self.data)
+        self.observation = []
+        for i in range(0,keywords_length):
+            ROW = []
+            ROW.append(self.data[i][5])
+            ROW.append(self.data[i][6])
+            ROW.append(self.data[i][9])
+            ROW.append(self.data[i][10])
+            ROW.append(self.data[i][11])
+            self.observation.append(ROW)
+        return self.observation
+    
+    def get_observation(self):
+        return self.observation
+    
+    def init_action_space(self):
+        self.action_space = [1,2]
+    
+    def get_action_space(self):
+        return self.action_space
+    
+    def step(self,u):
+        return self.get_observation(),self.reward,False,{}
+        
+            
+        
         
 
 print('test openpyxl sucessful!')

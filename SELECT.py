@@ -11,8 +11,7 @@ import numpy as np
 import tensorflow as tf
 sys.path.append('./')
 sys.path.append('model')
-
-import time 
+ 
 from Util import Memory ,StateProcessor
 from DDPG import DDPG
 from ACNetwork import ACNetwork
@@ -119,6 +118,10 @@ n_features = env.observation_space.shape[0]
 n_actions = env.action_space.shape[0]
 a_bound = env.action_space.high
 memory_size = 10000
+
+print('n_features: ' + str(n_features))
+print('n_actions: ' + str(n_actions))
+print('a_bound: ' + str(a_bound))
 ###############################  training  ####################################
 
 
@@ -139,6 +142,8 @@ step = 0
 for i in range(MAX_EPISODES):
     s = env.reset()
     ep_reward = 0
+    print('env s:')
+    print(s)
     for j in range(MAX_EP_STEPS):
         step+=1
         if RENDER:
@@ -146,6 +151,8 @@ for i in range(MAX_EPISODES):
 
         # Add exploration noise
         a = ddpg.choose_action(s)
+        print('a info：')
+        print(a)
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
         s_, r, done, info = env.step(a)
 
