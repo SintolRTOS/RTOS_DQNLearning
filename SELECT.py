@@ -19,8 +19,20 @@ np.random.seed(1)
 tf.set_random_seed(1)
 import time
 import logging  # 引入logging模块
+logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
+logger.setLevel(level = logging.DEBUG)
+handler = logging.FileHandler("Pendulum/log/log_" + str(time.time()) + '.txt')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+logger.addHandler(console)
+
+
 # 由于日志基本配置中级别设置为DEBUG，所以一下打印信息将会全部显示在控制台上
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -114,14 +126,18 @@ env = gym.make(ENV_NAME)
 env = env.unwrapped
 env.seed(1)
 
+print('env.observation_space: ' + str(env.observation_space))
+print('env.action_space: ' + str(env.action_space))
+
+
 n_features = env.observation_space.shape[0]
 n_actions = env.action_space.shape[0]
 a_bound = env.action_space.high
 memory_size = 10000
 
-print('n_features: ' + str(n_features))
-print('n_actions: ' + str(n_actions))
-print('a_bound: ' + str(a_bound))
+logger.info('n_features: ' + str(n_features))
+logger.info('n_actions: ' + str(n_actions))
+logger.info('a_bound: ' + str(a_bound))
 ###############################  training  ####################################
 
 
@@ -141,6 +157,7 @@ t1 = time.time()
 step = 0
 for i in range(MAX_EPISODES):
     s = env.reset()
+    logger.info('env.reset() s: ' + str(s))
     ep_reward = 0
     print('env s:')
     print(s)
@@ -151,17 +168,21 @@ for i in range(MAX_EPISODES):
 
         # Add exploration noise
         a = ddpg.choose_action(s)
-        print('a info：')
-        print(a)
+        logger.info('action choose: ' + str(a))
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
+        logger.info('var action choose: ' + str(a))
         s_, r, done, info = env.step(a)
 
         memory.store_transition(s, a, r / 10, s_)
+        logger.info('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r/10) + ' ,' + str(s_))
 
         if step > memory_size:
                 #env.render()
+                logger.info('-----------DDPG4Pendulum learning :-----------------' + str(step))
                 var *= .9995    # decay the action randomness
+                logger.info('learn var: ' + str(var))
                 data = memory.sample(batch_size)
+#                logger.info('learn data: ' + str(data))
                 ddpg.learn(data)
 
         s = s_

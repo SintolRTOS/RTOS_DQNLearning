@@ -19,8 +19,18 @@ np.random.seed(1)
 tf.set_random_seed(1)
 import time
 import logging  # 引入logging模块
+logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
+logger.setLevel(level = logging.DEBUG)
+handler = logging.FileHandler("KeyWords/log/log_" + str(time.time()) + '.txt')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+logger.addHandler(console)
 # 由于日志基本配置中级别设置为DEBUG，所以一下打印信息将会全部显示在控制台上
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -33,7 +43,7 @@ class DDPG4KeyWords(DDPG):
     def __init__(self, **kwargs):
         super(DDPG4KeyWords, self).__init__(**kwargs)
         
-     def _build_a_net(self,s,scope,trainable):
+    def _build_a_net(self,s,scope,trainable):
 
         #w_initializer, b_initializer = tf.random_normal_initializer(0., 0.3), tf.constant_initializer(0.1)
         w_initializer, b_initializer = None,None
@@ -64,8 +74,8 @@ class DDPG4KeyWords(DDPG):
 
 ############################ keword ddpg model parameters #####################
     
-MAX_EPISODES = 10000
-MAX_EP_STEPS = 20
+MAX_EPISODES = 1000000
+MAX_EP_STEPS = 2
 batch_size = 32
 
 evn = WordAgent('assert/keyword.xlsx','xlsx')
@@ -73,13 +83,13 @@ evn.openExcel()
 evn.reset()
 
 n_features = evn.get_observation().shape[0]
-n_actions = evn.get_action_space().shape[0]
-a_bound = evn.get_action_space().high
+n_actions = 1
+a_bound = np.array([2.])
 memory_size = 10000
 
-print('n_features: ' + str(n_features))
-print('n_actions: ' + str(n_actions))
-print('a_bound: ' + str(a_bound))
+logger.info('n_features: ' + str(n_features))
+logger.info('n_actions: ' + str(n_actions))
+logger.info('a_bound: ' + str(a_bound))
 
 ############################### training ######################################
 
@@ -94,36 +104,41 @@ ddpg = DDPG4KeyWords(n_actions=n_actions,
         a_bound =a_bound,
         model_dir = 'KeyWords/model_dir/DDPG4KeyWords/')
 memory = Memory(memory_size = memory_size)
-var = 2
+var = 3
 t1 = time.time()
 step = 0
 for i in range(MAX_EPISODES):
     s = evn.reset()
+    logger.info('env.reset() s: ' + str(s))
     ep_reward = 0
-    print('env s: ')
-    print(s)
-    print j in range(MAX_EP_STEPS):
+    for j in range(MAX_EP_STEPS):
         step+=1
         
         #add explorate noise
+        logger.info('ddpg.choose_action s: ' + str(s))
         a = ddpg.choose_action(s)
-        print('a info: ')
-        print(a)
-        a = np.clip(np.random.normal(a,var),-2,2)
+        logger.info('action choose: ' + str(a))
+        a = np.clip(np.random.normal(a, var), -2, 2)
+        logger.info('var action choose: ' + str(a))
         s_,r,done,info = evn.step(a)
         memory.store_transition(s,a,r,s_)
         
         if step > memory_size:
+            logger.info('-----------DDPG4KeyWords learning :-----------------' + str(step))
             var *= .9995
+            logger.info('learn var: ' + str(var))
             data = memory.sample(batch_size)
+            logger.info('learn data: ' + str(data))
             ddpg.learn(data)
             
         s = s_
         ep_reward += r
         if j == MAX_EP_STEPS-1:
-            print('Episode:',i,' Reward: %i' % int(ep_reward),'Explore: %.2f' % var,)
+            logger.info('result: ' + str(evn.result))
+            result_keywords = evn.get_result_keywords()
+            logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
             break
-print('Running time: ', time.time() - t1)    
+logger.info('Running time: ' +  str(time.time() - t1))    
         
         
         

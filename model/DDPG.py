@@ -159,6 +159,7 @@ class DDPG(object):
         self.cost =cost
         self.learn_step_counter += 1
             # save network every 100000 iteration
+        logging.info('learn_step_counter: ' + str(self.learn_step_counter))
         if self.learn_step_counter % 10000 == 0:
             self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter)
 
