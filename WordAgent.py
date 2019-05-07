@@ -5,14 +5,16 @@ Created on Mon Apr 29 18:26:17 2019
 @author: wangjingyi
 """
 import numpy as np
+np.set_printoptions(suppress=True)
 from openpyxl import load_workbook
 import logging  # 引入logging模块
 import time
+import tensorflow as tf
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
 logger.setLevel(level = logging.DEBUG)
-handler = logging.FileHandler("KeyWords/log/log_" + str(time.time()) + '.txt')
+handler = logging.FileHandler("WordGame/log/wordagent_log_" + str(time.time()) + '.txt')
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -20,6 +22,8 @@ logger.addHandler(handler)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 logger.addHandler(console)
+
+POPULARITY_BOUND = 1000000
 
 class WordAgent(object):
     """docstring for ClassName"""
@@ -44,12 +48,7 @@ class WordAgent(object):
         logging.info("form max_row: " + str(self.max_row))
         logging.info("form max_column: " + str(self.max_column))
         self.data = []
-        #read the excel file
-#        print(sheet.cell(2,2).value)
-#        for i in range(1,self.max_row):
-#            for j in range(1,self.max_column):
-#                print(sheet.cell(i,j).value)
-#                self.data[i,j] = sheet.cell(i,j).value
+
         for row in sheet.iter_rows(min_col=1, min_row=1, max_row=self.max_row, max_col=self.max_column):
             ROW = []
             for cell in row:
@@ -57,10 +56,8 @@ class WordAgent(object):
             self.data.append(ROW)
         logging.info("all form data: ")
         logging.info(self.data)
+        
     def reset(self):
-#        self.data.clear()
-#        print('wordAgent clear!')
-#        self.openExcel()
         self.init_observation()
         self.init_action_space()
         self.reward = 0
@@ -69,16 +66,16 @@ class WordAgent(object):
         return self.observation
         
     def init_observation(self):
-        logging.info('------------------ init_observation-------------------------')
-        self.keywords_length = 5
+        logging.debug('init_observation-------------------------')
+        self.keywords_length = len(self.data)
 #        logger.info('self.keywords_length: '+ str(self.keywords_length))
-        self.observation = np.zeros(self.keywords_length * self.parameter_size)
+        self.observation = np.empty(self.keywords_length * self.parameter_size,float)
         for i in range(self.keywords_length):
-            self.observation[i*self.parameter_size] = float(self.data[i][4])
-            self.observation[i*self.parameter_size + 1] = float(self.data[i][5])
-            self.observation[i*self.parameter_size + 2] = float(self.data[i][8])
-            self.observation[i*self.parameter_size + 3] = float(self.data[i][9])
-            self.observation[i*self.parameter_size + 4] = float(self.data[i][10])
+            self.observation[i*self.parameter_size] = self.data[i][4] / POPULARITY_BOUND
+            self.observation[i*self.parameter_size + 1] = self.data[i][5]
+            self.observation[i*self.parameter_size + 2] = self.data[i][8]
+            self.observation[i*self.parameter_size + 3] = self.data[i][9]
+            self.observation[i*self.parameter_size + 4] = self.data[i][10]
             self.observation[i*self.parameter_size + 5] = i
 #            logger.info('----------------self.observation i: ' + str(i))
 #            logger.info('self.observation[i*self.parameter_size]: ' + str(self.observation[i*self.parameter_size]))
@@ -95,6 +92,8 @@ class WordAgent(object):
 #            ROW.append(self.data[i][10])
 #            ROW.append(self.data[i][11])
 #            self.observation.append(ROW)
+        logger.debug(str(self.observation))
+        logger.debug('end_observation-------------------------')
         return self.observation
     
     def get_observation(self):
@@ -131,21 +130,20 @@ class WordAgent(object):
         index = int(pervalue * float(self.keywords_length - 1))
         logger.info('--------------step----------------')
         logger.info('WordAgent select index: ' + str(index))
+        
         popularity = self.observation[index*self.parameter_size]
         conversion = self.observation[index*self.parameter_size + 1]
         transform_1 = self.observation[index*self.parameter_size + 2]
         transform_2 = self.observation[index*self.parameter_size + 3]
         transform_3 = self.observation[index*self.parameter_size + 4]
         keywords_id = self.observation[index*self.parameter_size + 5]
-        self.reward += popularity*conversion + popularity*transform_1*2 + popularity*transform_2 + popularity*transform_3
+        #add mistake error value
+        self.observation[index*self.parameter_size] = -abs(popularity)
+        
+        self.reward += popularity*conversion*POPULARITY_BOUND + popularity*transform_1*2 + popularity*transform_2 + popularity*transform_3
         logger.info('WordAgent self.reward: ' + str(self.reward))
-        self.observation[index*self.parameter_size] = -1000
-        self.observation[index*self.parameter_size + 1] = -1
-        self.observation[index*self.parameter_size + 2] = -1
-        self.observation[index*self.parameter_size + 3] = -1
-        self.observation[index*self.parameter_size + 4] = -1
         self.result.append(int(keywords_id))
-#        self.observation[index*self.parameter_size + 5] = 0
+
         logger.info('step self.observation index: ' + str(index))
         logger.info('step self.observation[index*self.parameter_size]: ' + str(self.observation[index*self.parameter_size]))
         logger.info('step self.observation[index*self.parameter_size + 1]: ' + str(self.observation[index*self.parameter_size + 1]))
@@ -155,26 +153,17 @@ class WordAgent(object):
         logger.info('step self.observation[index*self.parameter_size + 5]: ' + str(self.observation[index*self.parameter_size + 5]))
         logger.info('step self.observation result: ' + str(self.result))
         logger.info('----------------step end---------------- ')
-#        self.observation = np.delete(self.observation,
-#                  (index*self.parameter_size,
-#                   index*self.parameter_size+1,
-#                   index*self.parameter_size+2,
-#                   index*self.parameter_size+3,
-#                   index*self.parameter_size+4,
-#                   index*self.parameter_size+5),
-#                   axis = 0)
-#        print('self.observation.shape: ',self.observation.shape)
-#        self.keywords_length -= 1
+        
         return self.get_observation(),self.reward,False,{}
         
             
         
         
 
-print('test openpyxl sucessful!')
-agent = WordAgent('assert/keyword.xlsx','xlsx')
-agent.openExcel()
-agent.reset()
+#print('test openpyxl sucessful!')
+#agent = WordAgent('assert/keyword.xlsx','xlsx')
+#agent.openExcel()
+#agent.reset()
         
 #info = np.array([1,2,3,4,5,6,7,8,9,0])
 #print(info.shape)

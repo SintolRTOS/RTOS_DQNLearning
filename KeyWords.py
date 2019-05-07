@@ -109,13 +109,15 @@ t1 = time.time()
 step = 0
 for i in range(MAX_EPISODES):
     s = evn.reset()
-    logger.info('env.reset() s: ' + str(s))
+    logger.info('env.reset() s: ')
+    logger.info(str(s))
     ep_reward = 0
     for j in range(MAX_EP_STEPS):
         step+=1
         
         #add explorate noise
-        logger.info('ddpg.choose_action s: ' + str(s))
+        logger.info('ddpg.choose_action s: ')
+        logger.info(str(s))
         a = ddpg.choose_action(s)
         logger.info('action choose: ' + str(a))
         a = np.clip(np.random.normal(a, var), -2, 2)

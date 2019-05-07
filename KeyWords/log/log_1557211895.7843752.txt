@@ -1,0 +1,28 @@
+2019-05-07 14:51:38,588 - WordAgent - INFO - WordAgent select: [2.]
+2019-05-07 14:51:38,592 - WordAgent - INFO - WordAgent pervalue: 1.0
+2019-05-07 14:51:38,595 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:51:38,599 - WordAgent - INFO - WordAgent select index: 4
+2019-05-07 14:51:38,603 - WordAgent - INFO - WordAgent self.reward: 5628.0375
+2019-05-07 14:51:38,609 - WordAgent - INFO - step self.observation index: 4
+2019-05-07 14:51:38,613 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:51:38,616 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:51:38,620 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:51:38,624 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:51:38,628 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:51:38,631 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 4.0
+2019-05-07 14:51:38,635 - WordAgent - INFO - step self.observation result: [4]
+2019-05-07 14:51:38,638 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:51:38,657 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:51:38,659 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:51:38,662 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:51:38,664 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:51:38,667 - WordAgent - INFO - WordAgent self.reward: 129837.54914603019
+2019-05-07 14:51:38,669 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:51:38,673 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:51:38,677 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:51:38,679 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:51:38,682 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:51:38,686 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:51:38,688 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:51:38,692 - WordAgent - INFO - step self.observation result: [4, 0]
+2019-05-07 14:51:38,695 - WordAgent - INFO - ----------------step end---------------- 

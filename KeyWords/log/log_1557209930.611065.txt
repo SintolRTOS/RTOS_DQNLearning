@@ -1,0 +1,259 @@
+2019-05-07 14:18:53,697 - WordAgent - INFO - WordAgent select: [2.]
+2019-05-07 14:18:53,701 - WordAgent - INFO - WordAgent pervalue: 1.0
+2019-05-07 14:18:53,705 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:53,709 - WordAgent - INFO - WordAgent select index: 4
+2019-05-07 14:18:53,713 - WordAgent - INFO - WordAgent self.reward: 5628.0375
+2019-05-07 14:18:53,717 - WordAgent - INFO - step self.observation index: 4
+2019-05-07 14:18:53,721 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:53,727 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:53,731 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:53,735 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:53,739 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:53,743 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 4.0
+2019-05-07 14:18:53,748 - WordAgent - INFO - step self.observation result: [4]
+2019-05-07 14:18:53,753 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:53,780 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:53,786 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:53,790 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:53,794 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:53,798 - WordAgent - INFO - WordAgent self.reward: 129837.54914603019
+2019-05-07 14:18:53,802 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:53,805 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:53,808 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:53,813 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:53,816 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:53,820 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:53,824 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:53,828 - WordAgent - INFO - step self.observation result: [4, 0]
+2019-05-07 14:18:53,832 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:53,839 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:53,842 - WordAgent - INFO - self.result: [4, 0]
+2019-05-07 14:18:53,845 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:53,849 - WordAgent - INFO - key_id: 4
+2019-05-07 14:18:53,853 - WordAgent - INFO - keywords: ½ºÔ­µ°°×·Û
+2019-05-07 14:18:53,857 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:53,861 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:53,865 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×·Û', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:53,868 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:53,904 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:53,909 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:53,913 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:53,917 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:53,920 - WordAgent - INFO - WordAgent self.reward: 124209.51164603018
+2019-05-07 14:18:53,924 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:53,929 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:53,932 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:53,936 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:53,940 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:53,945 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:53,948 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:53,951 - WordAgent - INFO - step self.observation result: [0]
+2019-05-07 14:18:53,956 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:53,978 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:53,981 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:53,986 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:53,989 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:53,993 - WordAgent - INFO - WordAgent self.reward: 129209.51164603018
+2019-05-07 14:18:53,997 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,001 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,006 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,009 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,013 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,018 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,022 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,025 - WordAgent - INFO - step self.observation result: [0, 0]
+2019-05-07 14:18:54,029 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,037 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:54,040 - WordAgent - INFO - self.result: [0, 0]
+2019-05-07 14:18:54,045 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:54,049 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,052 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,055 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,059 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,062 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:54,066 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:54,099 - WordAgent - INFO - WordAgent select: [0.59622289]
+2019-05-07 14:18:54,104 - WordAgent - INFO - WordAgent pervalue: 0.6490557219935089
+2019-05-07 14:18:54,110 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,113 - WordAgent - INFO - WordAgent select index: 2
+2019-05-07 14:18:54,117 - WordAgent - INFO - WordAgent self.reward: 16917.120000000003
+2019-05-07 14:18:54,120 - WordAgent - INFO - step self.observation index: 2
+2019-05-07 14:18:54,124 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,128 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,132 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,136 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,140 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,145 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 2.0
+2019-05-07 14:18:54,148 - WordAgent - INFO - step self.observation result: [2]
+2019-05-07 14:18:54,152 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,174 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:54,179 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:54,183 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,187 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,191 - WordAgent - INFO - WordAgent self.reward: 141126.63164603018
+2019-05-07 14:18:54,195 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,199 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,203 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,206 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,209 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,213 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,217 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,221 - WordAgent - INFO - step self.observation result: [2, 0]
+2019-05-07 14:18:54,225 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,235 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:54,239 - WordAgent - INFO - self.result: [2, 0]
+2019-05-07 14:18:54,242 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:54,247 - WordAgent - INFO - key_id: 2
+2019-05-07 14:18:54,250 - WordAgent - INFO - keywords: ½ºÔ­µ°°×Òº
+2019-05-07 14:18:54,255 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,260 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,264 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×Òº', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:54,269 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:54,306 - WordAgent - INFO - WordAgent select: [2.]
+2019-05-07 14:18:54,310 - WordAgent - INFO - WordAgent pervalue: 1.0
+2019-05-07 14:18:54,314 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,319 - WordAgent - INFO - WordAgent select index: 4
+2019-05-07 14:18:54,323 - WordAgent - INFO - WordAgent self.reward: 5628.0375
+2019-05-07 14:18:54,328 - WordAgent - INFO - step self.observation index: 4
+2019-05-07 14:18:54,331 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,335 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,338 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,341 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,345 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,349 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 4.0
+2019-05-07 14:18:54,352 - WordAgent - INFO - step self.observation result: [4]
+2019-05-07 14:18:54,356 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,381 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:54,384 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:54,393 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,399 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,409 - WordAgent - INFO - WordAgent self.reward: 129837.54914603019
+2019-05-07 14:18:54,414 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,419 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,422 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,426 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,432 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,438 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,445 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,450 - WordAgent - INFO - step self.observation result: [4, 0]
+2019-05-07 14:18:54,455 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,463 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:54,466 - WordAgent - INFO - self.result: [4, 0]
+2019-05-07 14:18:54,469 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:54,472 - WordAgent - INFO - key_id: 4
+2019-05-07 14:18:54,477 - WordAgent - INFO - keywords: ½ºÔ­µ°°×·Û
+2019-05-07 14:18:54,482 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,485 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,489 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×·Û', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:54,491 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:54,529 - WordAgent - INFO - WordAgent select: [-1.04288271]
+2019-05-07 14:18:54,533 - WordAgent - INFO - WordAgent pervalue: 0.23927932204282393
+2019-05-07 14:18:54,538 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,542 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,548 - WordAgent - INFO - WordAgent self.reward: 124209.51164603018
+2019-05-07 14:18:54,552 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,556 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,561 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,565 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,569 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,572 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,576 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,580 - WordAgent - INFO - step self.observation result: [0]
+2019-05-07 14:18:54,583 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,605 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:54,610 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:54,614 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,618 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,623 - WordAgent - INFO - WordAgent self.reward: 129209.51164603018
+2019-05-07 14:18:54,627 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,632 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,636 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,640 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,645 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,648 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,651 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,655 - WordAgent - INFO - step self.observation result: [0, 0]
+2019-05-07 14:18:54,659 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,668 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:54,672 - WordAgent - INFO - self.result: [0, 0]
+2019-05-07 14:18:54,676 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:54,681 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,685 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,689 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,693 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,697 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:54,701 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:54,739 - WordAgent - INFO - WordAgent select: [2.]
+2019-05-07 14:18:54,745 - WordAgent - INFO - WordAgent pervalue: 1.0
+2019-05-07 14:18:54,748 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,752 - WordAgent - INFO - WordAgent select index: 4
+2019-05-07 14:18:54,755 - WordAgent - INFO - WordAgent self.reward: 5628.0375
+2019-05-07 14:18:54,759 - WordAgent - INFO - step self.observation index: 4
+2019-05-07 14:18:54,766 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,772 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,776 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,781 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,785 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,790 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 4.0
+2019-05-07 14:18:54,795 - WordAgent - INFO - step self.observation result: [4]
+2019-05-07 14:18:54,800 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,831 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:54,835 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:54,839 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,844 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,848 - WordAgent - INFO - WordAgent self.reward: 129837.54914603019
+2019-05-07 14:18:54,854 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:54,860 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:54,867 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:54,873 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:54,879 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:54,884 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:54,890 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:54,895 - WordAgent - INFO - step self.observation result: [4, 0]
+2019-05-07 14:18:54,900 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:54,908 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:54,912 - WordAgent - INFO - self.result: [4, 0]
+2019-05-07 14:18:54,916 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:54,920 - WordAgent - INFO - key_id: 4
+2019-05-07 14:18:54,923 - WordAgent - INFO - keywords: ½ºÔ­µ°°×·Û
+2019-05-07 14:18:54,928 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:54,932 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:54,936 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×·Û', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:54,940 - WordAgent - INFO - --------------end get_result_keywords----------------
+2019-05-07 14:18:54,975 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:54,981 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:54,986 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:54,990 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:54,993 - WordAgent - INFO - WordAgent self.reward: 124209.51164603018
+2019-05-07 14:18:54,997 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:55,001 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:55,004 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:55,008 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:55,012 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:55,016 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:55,019 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:55,022 - WordAgent - INFO - step self.observation result: [0]
+2019-05-07 14:18:55,025 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:55,048 - WordAgent - INFO - WordAgent select: [-2.]
+2019-05-07 14:18:55,051 - WordAgent - INFO - WordAgent pervalue: 0.0
+2019-05-07 14:18:55,055 - WordAgent - INFO - --------------step----------------
+2019-05-07 14:18:55,059 - WordAgent - INFO - WordAgent select index: 0
+2019-05-07 14:18:55,062 - WordAgent - INFO - WordAgent self.reward: 129209.51164603018
+2019-05-07 14:18:55,066 - WordAgent - INFO - step self.observation index: 0
+2019-05-07 14:18:55,070 - WordAgent - INFO - step self.observation[index*self.parameter_size]: -1000.0
+2019-05-07 14:18:55,075 - WordAgent - INFO - step self.observation[index*self.parameter_size + 1]: -1.0
+2019-05-07 14:18:55,079 - WordAgent - INFO - step self.observation[index*self.parameter_size + 2]: -1.0
+2019-05-07 14:18:55,082 - WordAgent - INFO - step self.observation[index*self.parameter_size + 3]: -1.0
+2019-05-07 14:18:55,086 - WordAgent - INFO - step self.observation[index*self.parameter_size + 4]: -1.0
+2019-05-07 14:18:55,089 - WordAgent - INFO - step self.observation[index*self.parameter_size + 5]: 0.0
+2019-05-07 14:18:55,092 - WordAgent - INFO - step self.observation result: [0, 0]
+2019-05-07 14:18:55,096 - WordAgent - INFO - ----------------step end---------------- 
+2019-05-07 14:18:55,102 - WordAgent - INFO - --------------get_result_keywords----------------
+2019-05-07 14:18:55,107 - WordAgent - INFO - self.result: [0, 0]
+2019-05-07 14:18:55,113 - WordAgent - INFO - result count: 2
+2019-05-07 14:18:55,117 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:55,120 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:55,124 - WordAgent - INFO - key_id: 0
+2019-05-07 14:18:55,129 - WordAgent - INFO - keywords: ½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·
+2019-05-07 14:18:55,133 - WordAgent - INFO - result keywords: ['½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·', '½ºÔ­µ°°×ÒºÌ¬Òû ÕýÆ·']
+2019-05-07 14:18:55,137 - WordAgent - INFO - --------------end get_result_keywords----------------
