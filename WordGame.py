@@ -230,7 +230,7 @@ for i in range(MAX_WORDSODE):
         if step > memory_size:
 
                 logger.debug('DDPG4KeyWords learning :-----------------' + str(step))
-                var *= .9995    # decay the action randomness
+                var *= .9999995    # decay the action randomness
                 logger.debug('learn var: ' + str(var))
                 data = memory.sample(batch_size)
                 ddpg.learn(data)
