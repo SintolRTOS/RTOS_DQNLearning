@@ -170,8 +170,9 @@ class DDPG4KeyWords(DDPG):
 
 #####################  hyper parameters  ####################
 
-MAX_WORDSODE = 10000
-MAX_SELECT_STEPS = 20
+MAX_WORDSODE = 100000
+VAR_INCREATE = float(MAX_WORDSODE - 5) / float(MAX_WORDSODE)
+MAX_SELECT_STEPS = 2
 POPULARITY_BOUND = 1000000
 
 evn_word = WordAgent('assert/keyword.xlsx','xlsx')
@@ -219,9 +220,9 @@ for i in range(MAX_WORDSODE):
         logger.debug('current step: ' + str(step))
         # Add exploration noise
         a = ddpg.choose_action(s)
-        logger.debug('action choose: ' + str(a))
+        logger.info('action choose: ' + str(a))
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
-        logger.debug('var action choose: ' + str(a))
+        logger.info('var action choose: ' + str(a))
         s_, r, done, info = evn_word.step(a)
 
         memory.store_transition(s, a, r / POPULARITY_BOUND, s_)
@@ -230,7 +231,7 @@ for i in range(MAX_WORDSODE):
         if step > memory_size:
 
                 logger.debug('DDPG4KeyWords learning :-----------------' + str(step))
-                var *= .9999995    # decay the action randomness
+                var *= VAR_INCREATE    # decay the action randomness
                 logger.debug('learn var: ' + str(var))
                 data = memory.sample(batch_size)
                 ddpg.learn(data)

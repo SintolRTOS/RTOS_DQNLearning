@@ -67,7 +67,7 @@ class WordAgent(object):
         
     def init_observation(self):
         logging.debug('init_observation-------------------------')
-        self.keywords_length = len(self.data)
+        self.keywords_length = 8
 #        logger.info('self.keywords_length: '+ str(self.keywords_length))
         self.observation = np.empty(self.keywords_length * self.parameter_size,float)
         for i in range(self.keywords_length):
