@@ -14,7 +14,6 @@ sys.path.append('model')
 from WordAgent import WordAgent
 from Util import Memory ,StateProcessor
 from DDPG import DDPG
-from ACNetwork import ACNetwork
 np.random.seed(1)
 tf.set_random_seed(1)
 import time
@@ -24,7 +23,7 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
 logger.setLevel(level = logging.DEBUG)
 handler = logging.FileHandler("WordGame/log/wordgame_log_" + str(time.time()) + '.txt')
-handler.setLevel(logging.INFO)
+handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -108,7 +107,7 @@ class DDPG4KeyWords(DDPG):
         w_initializer, b_initializer = None,None
         with tf.variable_scope(scope):
             e1 = tf.layers.dense(inputs=s, 
-                    units=30, 
+                    units=512, 
                     bias_initializer = b_initializer,
                     kernel_initializer=w_initializer,
                     activation = tf.nn.relu,
@@ -123,7 +122,7 @@ class DDPG4KeyWords(DDPG):
         return tf.multiply(a, self.a_bound, name='scaled_a')  
     def _build_c_net(self, s, a, scope, trainable):
         with tf.variable_scope(scope):
-            n_l1 = 30
+            n_l1 = 512
             w1_s = tf.get_variable('w1_s', [self.n_features, n_l1], trainable=trainable)
             w1_a = tf.get_variable('w1_a', [self.n_actions, n_l1], trainable=trainable)
             b1 = tf.get_variable('b1', [1, n_l1], trainable=trainable)
@@ -170,9 +169,9 @@ class DDPG4KeyWords(DDPG):
 
 #####################  hyper parameters  ####################
 
-MAX_WORDSODE = 100000
+MAX_WORDSODE = 1000000
+MAX_SELECT_STEPS = 3
 VAR_INCREATE = float(MAX_WORDSODE - 5) / float(MAX_WORDSODE)
-MAX_SELECT_STEPS = 2
 POPULARITY_BOUND = 1000000
 
 evn_word = WordAgent('assert/keyword.xlsx','xlsx')
@@ -183,7 +182,7 @@ batch_size  = 32
 
 n_features = evn_word.get_observation().shape[0]
 n_actions = 1
-a_bound = np.array([2.])
+a_bound = np.array([1.])
 memory_size = 10000
 
 logger.debug('n_features: ' + str(n_features))
@@ -210,35 +209,50 @@ t1 = time.time()
 step = 0
 rank = KeyWordRank()
 for i in range(MAX_WORDSODE):
-    s = evn_word.reset()
-    logger.debug('env.reset() s: ' + str(s))
+    s = evn_word.reset().copy()
+#    logger.debug('env.reset() s: ' + str(s))
     ep_reward = 0
-    print('env s:')
-    print(s)
+    logger.debug('-------------------env s:')
+    logger.debug(s)
+#    while True:
     for j in range(MAX_SELECT_STEPS):
         step+=1
         logger.debug('current step: ' + str(step))
         # Add exploration noise
         a = ddpg.choose_action(s)
         logger.info('action choose: ' + str(a))
-        a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
+        a = np.clip(np.random.normal(a, var), -1, 1)    # add randomness to action selection for exploration
         logger.info('var action choose: ' + str(a))
         s_, r, done, info = evn_word.step(a)
 
-        memory.store_transition(s, a, r / POPULARITY_BOUND, s_)
-        logger.debug('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r/POPULARITY_BOUND) + ' ,' + str(s_))
+        memory.store_transition(s, a, r, s_)
+        logger.debug('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
 
         if step > memory_size:
 
-                logger.debug('DDPG4KeyWords learning :-----------------' + str(step))
-                var *= VAR_INCREATE    # decay the action randomness
-                logger.debug('learn var: ' + str(var))
+                logger.info('DDPG4KeyWords learning :-----------------' + str(step))
+                var *= 0.995    # decay the action randomness
+                logger.info('learn var: ' + str(var))
                 data = memory.sample(batch_size)
                 ddpg.learn(data)
-                logger.debug('end DDPG4KeyWords learning :-----------------')
+#                logger.debug('data: ' + str(data))
+                logger.info('end DDPG4KeyWords learning :-----------------')
 
-        s = s_
+        s = s_.copy()
         ep_reward += r
+#        test select step
+#        if done:
+#           logger.info('result: ' + str(evn_word.result))
+#           result_keywords = evn_word.get_result_keywords()
+#           logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
+#           rank.checkrank(ep_reward,result_keywords)
+#           logger.info('current rank value: ')
+#           logger.info(rank.rank_value)
+#           logger.info('current rank words: ')
+#           for n in range(len(rank.rank_list)):
+#               logger.info(rank.rank_list[n])
+#           break
+       
         if j == MAX_SELECT_STEPS-1:
            logger.info('result: ' + str(evn_word.result))
            result_keywords = evn_word.get_result_keywords()

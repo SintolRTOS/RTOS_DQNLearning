@@ -156,7 +156,7 @@ class DDPG(object):
 
         
         self.cost_his.append(cost)
-        self.cost =cost
+        self.cost = cost
         self.learn_step_counter += 1
             # save network every 100000 iteration
         logging.info('learn_step_counter: ' + str(self.learn_step_counter))

@@ -1,0 +1,20 @@
+MuJoCo Pro Trial license activation key, number 136333, type 6.
+
+Issued to Jingyi Wang <283413152@qq.com>.
+
+Expires June 8, 2019.
+
+This file activates MuJoCo Pro on a single computer with id:
+WINDOWS__A0GSHARNSI00EA000090DS000000002K493
+
+Do not modify this file. Its entire content, including the
+plain text section, is used by the activation manager.
+
+e93d6f3e604f85ce07503395b9f17a8ecec402e5037ebcfa7304863b1f3d19df
+e3856989743aa2aff7afc4c859ac8b818b99adfcf06122ed06dd5f1fb8b4a806
+3166147df4122ee795de3b31e0995f65c0bdedc867e69489944735679caeebcd
+49fbc0944f1f181f7413d150d6f17f006acdefc19ac078c2a5049b089cd167c7
+1de05642a2b0acf60bc9f9b011faeaad8354373b4dd07ad5446f6af25ba91cae
+e25344db81102aa7f47fc2886fa28ed64c04f0ba4dcaba37568b322a898f3920
+57fc953ca9519ecd85556e62c107609d02981b31dd53c8e194b8b525860d7dfd
+9082ebf56452815f93abcaa6761d202b9141108c53e057d50f080533be5c7cde

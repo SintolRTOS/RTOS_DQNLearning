@@ -22,7 +22,7 @@ import logging  # 引入logging模块
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
-logger.setLevel(level = logging.DEBUG)
+logger.setLevel(level = logging.INFO)
 handler = logging.FileHandler("Pendulum/log/log_" + str(time.time()) + '.txt')
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -54,7 +54,7 @@ class DDPG4Pendulum(DDPG):
         w_initializer, b_initializer = None,None
         with tf.variable_scope(scope):
             e1 = tf.layers.dense(inputs=s, 
-                    units=30, 
+                    units=512, 
                     bias_initializer = b_initializer,
                     kernel_initializer=w_initializer,
                     activation = tf.nn.relu,
@@ -69,7 +69,7 @@ class DDPG4Pendulum(DDPG):
         return tf.multiply(a, self.a_bound, name='scaled_a')  
     def _build_c_net(self, s, a, scope, trainable):
         with tf.variable_scope(scope):
-            n_l1 = 30
+            n_l1 = 512
             w1_s = tf.get_variable('w1_s', [self.n_features, n_l1], trainable=trainable)
             w1_a = tf.get_variable('w1_a', [self.n_actions, n_l1], trainable=trainable)
             b1 = tf.get_variable('b1', [1, n_l1], trainable=trainable)
@@ -116,7 +116,7 @@ class DDPG4Pendulum(DDPG):
 
 #####################  hyper parameters  ####################
 
-MAX_EPISODES = 500
+MAX_EPISODES = 50000
 MAX_EP_STEPS = 500
 batch_size  = 32
 RENDER = True
@@ -188,7 +188,7 @@ for i in range(MAX_EPISODES):
         s = s_
         ep_reward += r
         if j == MAX_EP_STEPS-1:
-            print('Episode:', i, ' Reward: %i' % int(ep_reward), 'Explore: %.2f' % var, )
+            logger.info('Episode:', i, ' Reward: %i' % int(ep_reward), 'Explore: %.2f' % var, )
             # if ep_reward > -300:RENDER = True
             break
-print('Running time: ', time.time() - t1)
+logger.info('Running time: ', time.time() - t1)
