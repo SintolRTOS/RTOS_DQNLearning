@@ -54,7 +54,7 @@ class DDPG4Pendulum(DDPG):
         w_initializer, b_initializer = None,None
         with tf.variable_scope(scope):
             e1 = tf.layers.dense(inputs=s, 
-                    units=512, 
+                    units=30, 
                     bias_initializer = b_initializer,
                     kernel_initializer=w_initializer,
                     activation = tf.nn.relu,
@@ -69,7 +69,7 @@ class DDPG4Pendulum(DDPG):
         return tf.multiply(a, self.a_bound, name='scaled_a')  
     def _build_c_net(self, s, a, scope, trainable):
         with tf.variable_scope(scope):
-            n_l1 = 512
+            n_l1 = 30
             w1_s = tf.get_variable('w1_s', [self.n_features, n_l1], trainable=trainable)
             w1_a = tf.get_variable('w1_a', [self.n_actions, n_l1], trainable=trainable)
             b1 = tf.get_variable('b1', [1, n_l1], trainable=trainable)
@@ -159,8 +159,8 @@ for i in range(MAX_EPISODES):
     s = env.reset()
     logger.info('env.reset() s: ' + str(s))
     ep_reward = 0
-    print('env s:')
-    print(s)
+    logger.debug('env s:')
+    logger.debug(s)
     for j in range(MAX_EP_STEPS):
         step+=1
         if RENDER:

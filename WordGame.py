@@ -19,11 +19,11 @@ tf.set_random_seed(1)
 import time
 import logging  # 引入logging模块
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
-logger.setLevel(level = logging.DEBUG)
+logger.setLevel(level = logging.INFO)
 handler = logging.FileHandler("WordGame/log/wordgame_log_" + str(time.time()) + '.txt')
-handler.setLevel(logging.DEBUG)
+handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -170,7 +170,7 @@ class DDPG4KeyWords(DDPG):
 #####################  hyper parameters  ####################
 
 MAX_WORDSODE = 1000000
-MAX_SELECT_STEPS = 3
+MAX_SELECT_STEPS = 10
 VAR_INCREATE = float(MAX_WORDSODE - 5) / float(MAX_WORDSODE)
 POPULARITY_BOUND = 1000000
 
@@ -226,12 +226,12 @@ for i in range(MAX_WORDSODE):
         s_, r, done, info = evn_word.step(a)
 
         memory.store_transition(s, a, r, s_)
-        logger.debug('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
+#        logger.info('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
 
         if step > memory_size:
 
                 logger.info('DDPG4KeyWords learning :-----------------' + str(step))
-                var *= 0.995    # decay the action randomness
+                var *= VAR_INCREATE    # decay the action randomness
                 logger.info('learn var: ' + str(var))
                 data = memory.sample(batch_size)
                 ddpg.learn(data)

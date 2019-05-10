@@ -9,9 +9,8 @@ np.set_printoptions(suppress=True)
 from openpyxl import load_workbook
 import logging  # 引入logging模块
 import time
-import tensorflow as tf
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')  # logging.basicConfig函数对日志的输出格式及方式做相关配置
 logger.setLevel(level = logging.INFO)
 handler = logging.FileHandler("WordGame/log/wordagent_log_" + str(time.time()) + '.txt')
@@ -45,7 +44,7 @@ class WordAgent(object):
     def openExcel(self):
         logging.info('start openpyxl openExcel!')
         self.wb = load_workbook(self.filepath)
-        print('form sheetname: ' + self.wb.sheetnames[0])
+        logging.info('form sheetname: ' + self.wb.sheetnames[0])
         self.keytitle = self.wb.sheetnames[0];
         sheet = self.wb.get_sheet_by_name(str(self.keytitle))
         self.max_row = sheet.max_row
@@ -53,14 +52,21 @@ class WordAgent(object):
         logging.info("form max_row: " + str(self.max_row))
         logging.info("form max_column: " + str(self.max_column))
         self.data = []
-
+        #wish data base
         for row in sheet.iter_rows(min_col=1, min_row=1, max_row=self.max_row, max_col=self.max_column):
             ROW = []
+            if row[4].value == 0:
+                continue;
+            if row[5].value == 0:
+                continue;
+            if row[8].value == 0 and row[9].value == 0 and row[10].value == 0:
+                continue;
             for cell in row:
                 ROW.append(cell.value)
             self.data.append(ROW)
-        logging.info("all form data: ")
-        logging.info(self.data)
+        logging.debug("totole data row: " + str(len(self.data)))
+        logging.debug("all form data: ")
+        logging.debug(self.data)
         
     def reset(self):
         self.init_observation()
@@ -90,10 +96,10 @@ class WordAgent(object):
         
         
     def init_observation(self):
-        logging.info('init_observation-------------------------')
-        self.keywords_length = 10
-#        self.keywords_length = len(self.data)
-        logger.info('self.keywords_length: '+ str(self.keywords_length))
+        logging.debug('init_observation-------------------------')
+#        self.keywords_length = 10
+        self.keywords_length = len(self.data)
+        logger.debug('self.keywords_length: '+ str(self.keywords_length))
         self.observation = np.empty(self.keywords_length * self.parameter_size,float)
         popularity_max = self.data[0][4]
         popularity_min = self.data[0][4]
@@ -135,21 +141,7 @@ class WordAgent(object):
                 transform_3_max = self.observation[i*self.parameter_size + 4]
             if self.observation[i*self.parameter_size + 4] < transform_3_min:
                 transform_3_min = self.observation[i*self.parameter_size + 4]
-#            self.observation[i*self.parameter_size + 5] = i
-#            logger.info('----------------self.observation i: ' + str(i))
-#            logger.info('self.observation[i*self.parameter_size]: ' + str(self.observation[i*self.parameter_size]))
-#            logger.info('self.observation[i*self.parameter_size + 1]: ' + str(self.observation[i*self.parameter_size + 1]))
-#            logger.info('self.observation[i*self.parameter_size + 2]: ' + str(self.observation[i*self.parameter_size + 2]))
-#            logger.info('self.observation[i*self.parameter_size + 3]: ' + str(self.observation[i*self.parameter_size + 3]))
-#            logger.info('self.observation[i*self.parameter_size + 4]: ' + str(self.observation[i*self.parameter_size + 4]))
-#            logger.info('----------------end---------------- ')
-#            ROW = []
-#            ROW.append(self.data[i][5])
-#            ROW.append(self.data[i][6])
-#            ROW.append(self.data[i][9])
-#            ROW.append(self.data[i][10])
-#            ROW.append(self.data[i][11])
-#            self.observation.append(ROW)
+
         #normal action
         normal_check_popularity = 0.
         normal_check_conversion = 0.
@@ -182,22 +174,57 @@ class WordAgent(object):
             self.observation[j*self.parameter_size + 4] = (self.observation[j*self.parameter_size + 4] - transform_3_min) / (transform_3_max - transform_3_min)
             normal_check_transform_3+=self.observation[j*self.parameter_size + 4]
             
-            logger.debug('----------------self.observation i: ' + str(j))
-            logger.debug('self.observation[i*self.parameter_size]: ' + str(self.observation[j*self.parameter_size]))
-            logger.debug('self.observation[i*self.parameter_size + 1]: ' + str(self.observation[j*self.parameter_size + 1]))
-            logger.debug('self.observation[i*self.parameter_size + 2]: ' + str(self.observation[j*self.parameter_size + 2]))
-            logger.debug('self.observation[i*self.parameter_size + 3]: ' + str(self.observation[j*self.parameter_size + 3]))
-            logger.debug('self.observation[i*self.parameter_size + 4]: ' + str(self.observation[j*self.parameter_size + 4]))
-            logger.debug('----------------end---------------- ')
+        
+        nomal_check_total = normal_check_popularity + normal_check_conversion + normal_check_transform_1 + normal_check_transform_2 + normal_check_transform_3
+        logger.debug('nomal_check_total:' + str(nomal_check_total))
+        #add mean value
+        normal_check_mean = nomal_check_total / self.observation.shape[0]
+        logger.debug('normal_check_mean:' + str(normal_check_mean))
+        normal_check_max = self.observation[0]
+        normal_check_min = self.observation[0]
+        for n in range(self.observation.shape[0]):
+            self.observation[n] += normal_check_mean
+#            logger.debug('self.observation_[n]:' + str(self.observation[n]))
+            if self.observation[n] > normal_check_max:
+                normal_check_max = self.observation[n]
+            if self.observation[n] <= normal_check_min:
+                normal_check_min = self.observation[n]
+        
+        logger.debug('normal_check_max:' + str(normal_check_max))
+        logger.debug('normal_check_min:' + str(normal_check_min))
+        
+        #check normal_action
+        normal_check_last = 0.
+        for x in range(self.observation.shape[0]):
+#            logger.debug('self.observation[n]:' + str(self.observation[x]))
+            self.observation[x] = (self.observation[x] - normal_check_min) / (normal_check_max - normal_check_min)
+#            logger.debug('self.observation[n]_:' + str(self.observation[x]))
+            normal_check_last += self.observation[x]
+        logger.debug('normal_check_last:' + str(normal_check_last))
             
-        logger.debug(str(self.observation))
+        
+        logger.debug('print total obervation--------------------------')
+        for a in range(self.keywords_length):
+            print_data = []
+            print_data.append(self.observation[j*self.parameter_size])
+            print_data.append(self.observation[j*self.parameter_size + 1])
+            print_data.append(self.observation[j*self.parameter_size + 2])
+            print_data.append(self.observation[j*self.parameter_size + 3])
+            print_data.append(self.observation[j*self.parameter_size + 4])
+            logger.debug(str(print_data))
+        logger.debug('end total obervation--------------------------')
+            
+            
+            
+#        logger.debug(str(self.observation))
         logger.debug('normal_check_popularity:' + str(normal_check_popularity))
         logger.debug('normal_check_conversion:' + str(normal_check_conversion))
         logger.debug('normal_check_transform_1:' + str(normal_check_transform_1))
         logger.debug('normal_check_transform_2:' + str(normal_check_transform_2))
         logger.debug('normal_check_transform_3:' + str(normal_check_transform_3))
-        logger.info('end_observation-------------------------')
+        logger.debug('end_observation-------------------------')
         return self.observation
+
     
     def get_observation(self):
         return self.observation
@@ -283,7 +310,7 @@ class WordAgent(object):
     def step(self,u):
         logger.info('WordAgent select: ' + str(u))
         a_value =  float(u[0])
-        pervalue = (a_value + 1.) / 2
+        pervalue = (a_value + 1.) / 2.
         logger.info('WordAgent pervalue: ' + str(pervalue))
         index = int(pervalue * float(self.keywords_length - 1))
         logger.info('--------------step----------------')
@@ -317,18 +344,10 @@ class WordAgent(object):
             
         
         
-#
-#print('test openpyxl sucessful!')
-#agent = WordAgent('assert/keyword.xlsx','xlsx')
-#agent.openExcel()
-#agent.reset()
-        
-#info = np.array([1,2,3,4,5,6,7,8,9,0])
-#print(info.shape)
-#observation =  np.delete(info,
-#                  (3,4,5),
-#                   axis = 0)
-#print(observation.shape)
 
+logger.debug('test openpyxl sucessful!')
+agent = WordAgent('assert/keyword.xlsx','xlsx')
+agent.openExcel()
+agent.reset()
     
         
