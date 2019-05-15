@@ -35,7 +35,7 @@ TRAIN_ABILITY = True;
 # 由于日志基本配置中级别设置为DEBUG，所以一下打印信息将会全部显示在控制台上
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-tfconfig = tf.ConfigProto()
+tfconfig = tf.ConfigProto()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 tfconfig.gpu_options.allow_growth = True
 session = tf.Session(config=tfconfig)
 
@@ -46,7 +46,7 @@ class KeyWordRank(object):
         super(KeyWordRank,self).__init__()
         self.rank_list = []
         self.rank_value = []
-        self.JUMP_INDEX = [0]
+        self.JUMP_INDEX = []
     
     def checkrank(self,rewardvalue,keylist):
 #        logger.info('start self.keyword_rank_list: ' + str(self.rank_list))
