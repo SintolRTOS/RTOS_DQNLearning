@@ -30,7 +30,7 @@ logger.addHandler(handler)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 logger.addHandler(console)
-
+TRAIN_ABILITY = True;
 
 # 由于日志基本配置中级别设置为DEBUG，所以一下打印信息将会全部显示在控制台上
 import os
@@ -46,6 +46,7 @@ class KeyWordRank(object):
         super(KeyWordRank,self).__init__()
         self.rank_list = []
         self.rank_value = []
+        self.JUMP_INDEX = [0]
     
     def checkrank(self,rewardvalue,keylist):
 #        logger.info('start self.keyword_rank_list: ' + str(self.rank_list))
@@ -91,6 +92,14 @@ class KeyWordRank(object):
             if len(self.rank_value) < MAX_SELECT_STEPS:
                 self.rank_value.append(rewardvalue)
                 self.rank_list.append(str(keylist))
+    
+    def check_jump_index(self,index):
+        for i in range(len(self.JUMP_INDEX)):
+            value = self.JUMP_INDEX[i]
+            if value == index:
+                return True
+        
+        return False
         
 #        logger.info('last self.keyword_rank_list: ' + str(self.rank_list))
 
@@ -171,6 +180,7 @@ class DDPG4KeyWords(DDPG):
 
 MAX_WORDSODE = 1000000
 MAX_SELECT_STEPS = 10
+MAX_RANDAL_COUNT = MAX_WORDSODE
 VAR_INCREATE = float(MAX_WORDSODE - 5) / float(MAX_WORDSODE)
 POPULARITY_BOUND = 1000000
 
@@ -196,8 +206,8 @@ logger.debug('a_bound: ' + str(a_bound))
 ddpg = DDPG4KeyWords(n_actions=n_actions,
         n_features=n_features,
         reward_decay=0.9,
-        lr_a = 0.001,
-        lr_c = 0.002,
+        lr_a = 0.0001,
+        lr_c = 0.0002,
         TAU = 0.01,
         output_graph=False,
         log_dir = 'WordGame/log/DDPG4KeyWords/',
@@ -208,28 +218,44 @@ var = 3  # control exploration
 t1 = time.time()
 step = 0
 rank = KeyWordRank()
-for i in range(MAX_WORDSODE):
+
+for i in range(MAX_WORDSODE * 2):
     s = evn_word.reset().copy()
 #    logger.debug('env.reset() s: ' + str(s))
     ep_reward = 0
     logger.debug('-------------------env s:')
     logger.debug(s)
 #    while True:
-    for j in range(MAX_SELECT_STEPS):
-        step+=1
-        logger.debug('current step: ' + str(step))
-        # Add exploration noise
-        a = ddpg.choose_action(s)
-        logger.info('action choose: ' + str(a))
-        a = np.clip(np.random.normal(a, var), -1, 1)    # add randomness to action selection for exploration
-        logger.info('var action choose: ' + str(a))
-        s_, r, done, info = evn_word.step(a)
+    if TRAIN_ABILITY:
+        logger.info('TRAIN_ABILITY TRUE :-----------------' + str(i))
+        for j in range(MAX_SELECT_STEPS):
+            step+=1
+            logger.debug('current step: ' + str(step))
+            # Add exploration noise
+            a = ddpg.choose_action(s)
+            logger.info('action choose: ' + str(a))
+            
+            if rank.check_jump_index(j) == False:
+                a *= 2.
+                if step < MAX_RANDAL_COUNT:
+                    a[0] = -1.
+                    a[0] += np.random.random() * 2
+                    a[0] *= 2.
+                    logger.info('MAX_RANDAL_COUNT action choose: ' + str(a))
+#                   a[0] = -1
+#                   a[0] += ((float(step) / MAX_RANDAL_COUNT) * 2)
+        
+                a = np.clip(np.random.normal(a, var), -2, 2)
+                a /= 2.
+            
+#           a = np.clip(np.random.normal(a, var), -1, 1)    # add randomness to action selection for exploration
+            logger.info('var action choose: ' + str(a))
+            s_, r, done, info = evn_word.step(a)
 
-        memory.store_transition(s, a, r, s_)
-#        logger.info('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
+            memory.store_transition(s, a, r, s_)
+#            logger.info('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
 
-        if step > memory_size:
-
+            if step > memory_size * 5:
                 logger.info('DDPG4KeyWords learning :-----------------' + str(step))
                 var *= VAR_INCREATE    # decay the action randomness
                 logger.info('learn var: ' + str(var))
@@ -238,32 +264,43 @@ for i in range(MAX_WORDSODE):
 #                logger.debug('data: ' + str(data))
                 logger.info('end DDPG4KeyWords learning :-----------------')
 
-        s = s_.copy()
-        ep_reward += r
-#        test select step
-#        if done:
-#           logger.info('result: ' + str(evn_word.result))
-#           result_keywords = evn_word.get_result_keywords()
-#           logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
-#           rank.checkrank(ep_reward,result_keywords)
-#           logger.info('current rank value: ')
-#           logger.info(rank.rank_value)
-#           logger.info('current rank words: ')
-#           for n in range(len(rank.rank_list)):
-#               logger.info(rank.rank_list[n])
-#           break
+            s = s_.copy()
+            ep_reward += r
        
-        if j == MAX_SELECT_STEPS-1:
-           logger.info('result: ' + str(evn_word.result))
-           result_keywords = evn_word.get_result_keywords()
-           logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
-           rank.checkrank(ep_reward,result_keywords)
-           logger.info('current rank value: ')
-           logger.info(rank.rank_value)
-           logger.info('current rank words: ')
-           for n in range(len(rank.rank_list)):
-               logger.info(rank.rank_list[n])
-           break
+            if j == MAX_SELECT_STEPS-1:
+                logger.info('result: ' + str(evn_word.result))
+                result_keywords = evn_word.get_result_keywords()
+                logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
+                rank.checkrank(ep_reward,result_keywords)
+                logger.info('current rank value: ')
+                logger.info(rank.rank_value)
+                logger.info('current rank words: ')
+                for n in range(len(rank.rank_list)):
+                    logger.info(rank.rank_list[n])
+                break
+    else:
+        logger.info('TRAIN_ABILITY FALSE :-----------------' + str(i))
+        for j in range(MAX_SELECT_STEPS):
+            step+=1
+            logger.debug('current step: ' + str(step))
+            a = ddpg.choose_action(s)
+            logger.info('action choose: ' + str(a))
+            s_, r, done, info = evn_word.step(a)
+
+            s = s_.copy()
+            ep_reward += r
+            if j == MAX_SELECT_STEPS-1:
+                logger.info('result: ' + str(evn_word.result))
+                result_keywords = evn_word.get_result_keywords()
+                logger.info('Episode:' + str(i) + ' Reward: ' + str(ep_reward) + ' Result: ' + str(result_keywords))
+                rank.checkrank(ep_reward,result_keywords)
+                logger.info('current rank value: ')
+                logger.info(rank.rank_value)
+                logger.info('current rank words: ')
+                for n in range(len(rank.rank_list)):
+                    logger.info(rank.rank_list[n])
+                break
+    
        
 logger.info('Running time: ', time.time() - t1)
 logger.info('Finally rank value: ')

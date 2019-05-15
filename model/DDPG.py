@@ -114,7 +114,7 @@ class DDPG(object):
         checkpoint = tf.train.get_checkpoint_state(self.model_dir)
         if checkpoint and checkpoint.model_checkpoint_path:
             self.saver.restore(self.sess, checkpoint.model_checkpoint_path)
-            print ("Loading Successfully")
+            print ("Loading Model Successfully")
             self.learn_step_counter = int(checkpoint.model_checkpoint_path.split('-')[-1]) + 1
    
 
@@ -137,6 +137,17 @@ class DDPG(object):
         batch_memory_s_ = data['s_']
         
         batch_memory_r = batch_memory_r[:,np.newaxis]
+        
+        
+        # 标准指数型衰减
+        learing_rate_actor = tf.train.natural_exp_decay(learning_rate=self.lr_a, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
+        learing_rate_critic = tf.train.natural_exp_decay(learning_rate=self.lr_c, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
+        
+        self.train_op_actor = tf.train.AdamOptimizer(learing_rate_actor).minimize(self.loss_actor,var_list=self.ae_params)
+        self.train_op_critic = tf.train.AdamOptimizer(learing_rate_critic).minimize(self.loss_critic,var_list=self.ce_params)
+
+       
+        
         _, cost = self.sess.run(
             [self.train_op_actor, self.loss_actor],
             feed_dict={
@@ -161,7 +172,7 @@ class DDPG(object):
             # save network every 100000 iteration
         logging.info('learn_step_counter: ' + str(self.learn_step_counter))
         if self.learn_step_counter % 10000 == 0:
-            self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter)
+            self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter,max_to_keep=100,keep_checkpoint_every_n_hours=1)
 
 
 

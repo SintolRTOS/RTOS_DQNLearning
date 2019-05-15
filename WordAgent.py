@@ -325,8 +325,11 @@ class WordAgent(object):
         transform_3 = self.observation[index*self.parameter_size + 4]
         keywords_id = index
         #add mistake error value
-        self.observation[index*self.parameter_size] = -abs(popularity)
+#        self.observation[index*self.parameter_size] = -abs(popularity)
+        self.observation[index*self.parameter_size] = -1.
         self.reward = popularity*conversion + popularity*transform_1*2 + popularity*transform_2 + popularity*transform_3
+        if popularity == -1.:
+            self.reward = -1
         logger.info('WordAgent self.reward: ' + str(self.reward))
         self.result.append(int(keywords_id))
 
