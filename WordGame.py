@@ -120,8 +120,14 @@ class DDPG4KeyWords(DDPG):
                     bias_initializer = b_initializer,
                     kernel_initializer=w_initializer,
                     activation = tf.nn.relu,
-                    trainable=trainable)  
-            a = tf.layers.dense(inputs=e1, 
+                    trainable=trainable) 
+            e2 = tf.layers.dense(inputs=e1, 
+                    units=400, 
+                    bias_initializer = b_initializer,
+                    kernel_initializer=w_initializer,
+                    activation = tf.nn.relu,
+                    trainable=trainable) 
+            a = tf.layers.dense(inputs=e2, 
                     units=self.n_actions, 
                     bias_initializer = b_initializer,
                     kernel_initializer=w_initializer,
@@ -206,8 +212,8 @@ logger.debug('a_bound: ' + str(a_bound))
 ddpg = DDPG4KeyWords(n_actions=n_actions,
         n_features=n_features,
         reward_decay=0.9,
-        lr_a = 0.0001,
-        lr_c = 0.0002,
+        lr_a = 0.0000001,
+        lr_c = 0.0000002,
         TAU = 0.01,
         output_graph=False,
         log_dir = 'WordGame/log/DDPG4KeyWords/',

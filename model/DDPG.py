@@ -75,7 +75,7 @@ class DDPG(object):
         self.ce_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Critic/eval')
         self.ct_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Critic/target')
         
-        self.saver = tf.train.Saver()
+        self.saver = tf.train.Saver(max_to_keep=100,keep_checkpoint_every_n_hours=1)
 
         if not os.path.exists(self.model_dir):
             os.mkdir(self.model_dir)
@@ -83,22 +83,26 @@ class DDPG(object):
         
         self.learn_step_counter = 0
         self.sess = tf.Session()
+
+        self.sess.run(tf.global_variables_initializer()) 
         
         checkpoint = tf.train.get_checkpoint_state(self.model_dir)
+        print ("Loading Model checkpoint",checkpoint)
         if checkpoint and checkpoint.model_checkpoint_path:
             self.saver.restore(self.sess, checkpoint.model_checkpoint_path)
             print ("Loading Model Successfully")
             self.learn_step_counter = int(checkpoint.model_checkpoint_path.split('-')[-1]) + 1
+            print ("Loading Model learn_step_counter:" , self.learn_step_counter)
 
        
                 # 标准指数型衰减
-        learing_rate_actor = tf.train.exponential_decay(learning_rate=self.lr_a, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
-        learing_rate_critic = tf.train.exponential_decay(learning_rate=self.lr_c, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
+#        learing_rate_actor = tf.train.exponential_decay(learning_rate=self.lr_a, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
+#        learing_rate_critic = tf.train.exponential_decay(learning_rate=self.lr_c, global_step=self.learn_step_counter, decay_steps=1000, decay_rate=0.95, staircase=True)
           
         
         with tf.variable_scope('train_op_actor'):
             self.loss_actor = -tf.reduce_mean(q)
-            self.train_op_actor = tf.train.AdamOptimizer(learing_rate_actor).minimize(self.loss_actor,var_list=self.ae_params)  
+            self.train_op_actor = tf.train.AdamOptimizer(self.lr_a).minimize(self.loss_actor,var_list=self.ae_params)  
     
     
 
@@ -107,7 +111,7 @@ class DDPG(object):
             
             q_target = self.r + self.gamma * q_ 
             self.loss_critic =tf.losses.mean_squared_error(labels=q_target, predictions=q)
-            self.train_op_critic = tf.train.AdamOptimizer(learing_rate_critic).minimize(self.loss_critic,var_list=self.ce_params)
+            self.train_op_critic = tf.train.AdamOptimizer(self.lr_c).minimize(self.loss_critic,var_list=self.ce_params)
        
 
             # target net replacement
@@ -117,7 +121,6 @@ class DDPG(object):
         if self.output_graph:
             tf.summary.FileWriter(self.log_dir,self.sess.graph)
 
-        self.sess.run(tf.global_variables_initializer())
         
         self.cost_his =[0]
         self.cost =0 
@@ -179,7 +182,7 @@ class DDPG(object):
         logging.info('learn_step_counter: ' + str(self.learn_step_counter))
         logging.info('self.cost: ' + str(self.cost))
         if self.learn_step_counter % 10000 == 0:
-            self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter,max_to_keep=100,keep_checkpoint_every_n_hours=1)
+            self.saver.save(self.sess,self.model_dir,global_step=self.learn_step_counter)
 
 
 
