@@ -186,7 +186,7 @@ class DDPG4KeyWords(DDPG):
 
 MAX_WORDSODE = 1000000
 MAX_SELECT_STEPS = 10
-MAX_RANDAL_COUNT = MAX_WORDSODE
+MAX_RANDAL_COUNT = MAX_WORDSODE * 2
 VAR_INCREATE = float(MAX_WORDSODE - 5) / float(MAX_WORDSODE)
 POPULARITY_BOUND = 1000000
 
@@ -212,8 +212,8 @@ logger.debug('a_bound: ' + str(a_bound))
 ddpg = DDPG4KeyWords(n_actions=n_actions,
         n_features=n_features,
         reward_decay=0.9,
-        lr_a = 0.0000001,
-        lr_c = 0.0000002,
+        lr_a = 0.000000001,
+        lr_c = 0.000000002,
         TAU = 0.01,
         output_graph=False,
         log_dir = 'WordGame/log/DDPG4KeyWords/',
@@ -261,7 +261,7 @@ for i in range(MAX_WORDSODE * 2):
             memory.store_transition(s, a, r, s_)
 #            logger.info('memory.store_transition: ' + str(s) + ' ,' + str(a) + ' ,' + str(r) + ' ,' + str(s_))
 
-            if step > memory_size * 5:
+            if step >  memory_size * 5:
                 logger.info('DDPG4KeyWords learning :-----------------' + str(step))
                 var *= VAR_INCREATE    # decay the action randomness
                 logger.info('learn var: ' + str(var))
